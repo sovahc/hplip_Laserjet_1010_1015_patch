@@ -1,0 +1,1 @@
+# hplip_Laserjet_1010_1015_patch
