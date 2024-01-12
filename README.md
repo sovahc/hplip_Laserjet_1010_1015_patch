@@ -39,8 +39,11 @@ In the **Software & Updates** (software-properties-gtk) check **Ubuntu Software 
 
 (Alternatively, you can enable source code repositories by uncommenting deb-src repositories in /etc/apt/sources.list)
 
+
 Then
 ```bash
+sudo apt update
+
 # change working directory to something what you want
 mkdir ~/Desktop/printer_patch
 cd ~/Desktop/printer_patch
