@@ -34,9 +34,10 @@ Transparency | Light
 ## INSTALLATION
 (My OS Ubuntu 23.10)
 
-1. Enable source code repositories in Ubuntu
+Enable source code repositories
 In the **Software & Updates** (software-properties-gtk) check **Ubuntu Software -> Source Code**
-(Alternatively you can enable source code repositories by uncommenting deb-src repositories from /etc/apt/sources.list)
+
+(Alternatively, you can enable source code repositories by uncommenting deb-src repositories in /etc/apt/sources.list)
 
 Then
 ```bash
@@ -51,7 +52,7 @@ git clone https://github.com/sovahc/hplip_Laserjet_1010_1015_patch.git
 # install hplip build dependencies
 sudo apt build-dep hplip
 
-# get hplip source code (will be unpacked into current directory)
+# get hplip source code (It will be unpacked to the current directory)
 apt source hplip
 
 # go to hplip source code directory
@@ -62,10 +63,10 @@ patch -p1 <../hplip_Laserjet_1010_1015_patch/my.patch
 
 # three files will be patched
 
-# this also needed
+# this is also needed
 sudo apt install fakeroot
 
-# for sure
+# maybe this
 sudo apt build-dep hello
 
 # build .deb package
@@ -74,7 +75,7 @@ dpkg-buildpackage -rfakeroot -uc -b
 # up to generated .deb files
 cd ..
 
-# install compiled driver (only this part is updated by patch)
+# install compiled driver (Only this part is updated with a patch)
 sudo dpkg -i hplip_3*.deb
 
 ```
@@ -82,19 +83,19 @@ sudo dpkg -i hplip_3*.deb
 Go to **Settings->Printers**.
 Select your Laserjet 1010/1015 and Press **Remove Printer**
 
-Turn off your printer, wait 10 sec and turn on again.
-Drivers should be reinstalled.
+Turn off the printer, wait 10 seconds and turn it on again.
+The driver will be reinstalled.
 
 Go to **Printing Options** and press **Paper Type**
 
-Here will be 14 types of paper instead of one.
+There will be 14 types of paper instead of one.
 
 ## USAGE
 
-In CUPS "Printing options":
+In CUPS **Printing options**:
 
 * For thin paper select: Light
-* For thick paper select: Rough
+* For thick paper select: Rough (the printer will take longer to start and print slower)
 * Otherwise select default: Plain
 
 ## UNINSTALLATION
@@ -106,6 +107,6 @@ sudo apt reinstall hplip
 ```
 
 * Press **Remove Printer**
-Then turn off and on printer again.
+Then turn the printer off and on again.
 
 * Remove your build directory.
