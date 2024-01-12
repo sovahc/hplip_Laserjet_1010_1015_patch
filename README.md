@@ -4,11 +4,12 @@ Linux HP Laserjet 1010/1015 paper type settings
 
 This patch restores the lost paper type setting for Hewlet Packard Laserjet 1010 and Laserjet 1015
 
+Thick paper (250 g/m<sup>2</sup>)
+
 ![Fuser settings on thick paper](fuser_settings.jpg)
 
-Left: "Light" mode for thick paper (250 g/m2)
-Center: "Plain" mode for same paper.
-Right "Rough" mode for same paper.
+"Light" mode | "Plain" mode | "Rough" mode
+-------------|--------------|-------------
 
 Right speed and fuser temperature are essential for good print.
 
