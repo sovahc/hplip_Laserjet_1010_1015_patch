@@ -7,11 +7,12 @@ This patch restores the lost paper type setting for Hewlet Packard Laserjet 1010
 Thick paper (250 g/m<sup>2</sup>)
 
 ![Fuser settings on thick paper](fuser_settings.jpg)
+Fuser settings on thick paper.
 
 "Light" mode | "Plain" mode | "Rough" mode
 -------------|--------------|-------------
 
-Right speed and fuser temperature are essential for good print.
+Correct speed and fuser temperature are essential for high-quality prints.
 
 The printer itself supports 14 types of paper:
 
