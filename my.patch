@@ -1,0 +1,66 @@
+diff -ruNp hplip-3.22.10+dfsg0.original/prnt/drv/hpcups.drv.in.template hplip-3.22.10+dfsg0/prnt/drv/hpcups.drv.in.template
+--- hplip-3.22.10+dfsg0.original/prnt/drv/hpcups.drv.in.template	2024-01-12 21:02:52.000000000 +0200
++++ hplip-3.22.10+dfsg0/prnt/drv/hpcups.drv.in.template	2024-01-12 20:56:47.728751482 +0200
+@@ -14071,7 +14071,20 @@ Group "RLT/HP Real Life Technologies"
+ 
+   // cupsMediaType values map to MEDIATYPE from global_types.h
+   Option "MediaType/Media Type" PickOne AnySetup 10.0
+-    *Choice "Plain/Plain Paper" "<</MediaType(Plain)/cupsMediaType 0>>setpagedevice"
++    *Choice "Plain/Plain"          "<</MediaType(Plain)/cupsMediaType 8>>setpagedevice"
++    Choice "Bond/Bond"             "<</MediaType(Bond)/cupsMediaType 0>>setpagedevice"
++    Choice "Cardstock/Cardstock"   "<</MediaType(Cardstock)/cupsMediaType 1>>setpagedevice"
++    Choice "Color/Color"           "<</MediaType(Color)/cupsMediaType 2>>setpagedevice"
++    Choice "Envelope/Envelope"     "<</MediaType(Envelope)/cupsMediaType 3>>setpagedevice"
++    Choice "Heavy/Heavy"           "<</MediaType(Heavy)/cupsMediaType 4>>setpagedevice"
++    Choice "Labels/Labels"         "<</MediaType(Labels)/cupsMediaType 5>>setpagedevice"
++    Choice "Letterhead/Letterhead" "<</MediaType(Letterhead)/cupsMediaType 6>>setpagedevice"
++    Choice "Light/Light"           "<</MediaType(Light)/cupsMediaType 7>>setpagedevice"
++    Choice "Preprinted/Preprinted" "<</MediaType(Preprinted)/cupsMediaType 9>>setpagedevice"
++    Choice "Prepunched/Prepunched" "<</MediaType(Prepunched)/cupsMediaType 10>>setpagedevice"
++    Choice "Recycled/Recycled"     "<</MediaType(Recycled)/cupsMediaType 11>>setpagedevice"
++    Choice "Rough/Rough"           "<</MediaType(Rough)/cupsMediaType 12>>setpagedevice"
++    Choice "Transparency/Transparency" "<</MediaType(Transparency)/cupsMediaType 13>>setpagedevice"
+ 
+   // cupsCompression values map to QUALITY_MODE from global_types.h
+   Option "OutputMode/Print Quality" PickOne AnySetup 10.0
+diff -ruNp hplip-3.22.10+dfsg0.original/prnt/hpcups/HPCupsFilter.cpp hplip-3.22.10+dfsg0/prnt/hpcups/HPCupsFilter.cpp
+--- hplip-3.22.10+dfsg0.original/prnt/hpcups/HPCupsFilter.cpp	2024-01-12 21:02:52.000000000 +0200
++++ hplip-3.22.10+dfsg0/prnt/hpcups/HPCupsFilter.cpp	2024-01-12 17:50:44.250745719 +0200
+@@ -440,6 +440,9 @@ DRIVER_ERROR HPCupsFilter::startPage (cu
+         m_JA.media_attributes.physical_height  = (cups_header->PageSize[1] * vert_res) / 72;
+         m_JA.media_attributes.printable_width  = cups_header->cupsWidth;
+         m_JA.media_attributes.printable_height = cups_header->cupsHeight;
++
++        // sova
++        strncpy(m_JA.media_attributes.MediaTypeName, cups_header->MediaType, sizeof(m_JA.media_attributes.MediaTypeName));
+     }
+ 
+     if (m_iLogLevel & BASIC_LOG) {
+diff -ruNp hplip-3.22.10+dfsg0.original/prnt/hpcups/LJFastRaster.cpp hplip-3.22.10+dfsg0/prnt/hpcups/LJFastRaster.cpp
+--- hplip-3.22.10+dfsg0.original/prnt/hpcups/LJFastRaster.cpp	2023-01-15 12:37:38.000000000 +0200
++++ hplip-3.22.10+dfsg0/prnt/hpcups/LJFastRaster.cpp	2024-01-12 17:50:44.250745719 +0200
+@@ -144,6 +144,24 @@ DRIVER_ERROR LJFastRaster::StartPage(Job
+ 
+ //  Set media source, type, size and quality modes.
+ 
++    // sova: fixed mising MediaType (paper type: Plain, Light, Heavy, Rough, e.t.c)
++    char* mt = m_pMA->MediaTypeName;
++    int mtl = strlen(mt);
++    if(mtl)
++    {
++        u_int8_t b;
++        b = 0xC8; addToHeader(&b, 1); // C8 = ubyte array
++        b = 0xC1; addToHeader(&b, 1); // C1 = uint16
++        // length
++        b = mtl; addToHeader(&b, 1); 
++        b = 0; addToHeader(&b, 1); // length is always less than 64
++        //
++        addToHeader((BYTE*)mt, mtl);
++        b = 0xF8; addToHeader(&b, 1); // F8 = attr ubyte
++        b = 0x27; addToHeader(&b, 1); // 27 = media type
++    }
++    //
++
+     if (m_pMA->pcl_id == 96)    // custom paper size
+     {
+         BYTE    szCustomSize[16];
