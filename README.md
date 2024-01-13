@@ -1,6 +1,6 @@
 Linux HP Laserjet 1010/1015 paper type settings
 ==
-## WHAT IS IT
+## WHAT IT IS
 
 This patch restores the lost paper type setting for Hewlet Packard Laserjet 1010 and Laserjet 1015
 
@@ -37,7 +37,7 @@ Transparency | Light
 (My OS Ubuntu 23.10)
 
 Enable source code repositories
-In the **Software & Updates** (software-properties-gtk) check **Ubuntu Software -> Source Code**
+In the **Software & Updates** (software-properties-gtk) by checking **Ubuntu Software -> Source Code**
 
 (Alternatively, you can enable source code repositories by uncommenting deb-src repositories in /etc/apt/sources.list)
 
@@ -93,7 +93,7 @@ The driver will be reinstalled.
 
 Go to **Printing Options** and press **Paper Type**
 
-There will be 14 types of paper instead of one.
+Now you should see 14 types of paper instead of one.
 
 ## USAGE
 
@@ -105,7 +105,7 @@ In CUPS **Printing options**:
 
 ## UNINSTALLATION
 
-* Just restore original module
+* Just restore the original module
 
 ```shell
 sudo apt reinstall hplip
